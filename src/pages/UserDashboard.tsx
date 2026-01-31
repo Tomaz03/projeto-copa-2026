@@ -389,12 +389,12 @@ export default function UserDashboard() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-muted/50 text-center">
-                  <p className="text-xs text-muted-foreground uppercase font-bold">Próximo Jogo</p>
-                  <p className="text-sm font-semibold mt-1">Disponível em breve</p>
+                  <p className="text-xs text-muted-foreground uppercase font-bold">Primeiro Jogo</p>
+                  <p className="text-sm font-semibold mt-1">11/06/2026, às 16:00</p>
                 </div>
                 <div className="p-4 rounded-xl bg-muted/50 text-center">
                   <p className="text-xs text-muted-foreground uppercase font-bold">Fechamento Palpites</p>
-                  <p className="text-sm font-semibold mt-1">{BOLAOO_CONFIG.MAX_PREDICTION_TIME_BEFORE_MATCH} min antes</p>
+                  <p className="text-sm font-semibold mt-1">24 horas antes da copa começar</p>
                 </div>
               </div>
 
