@@ -1,0 +1,203 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+==========================================================================
+【AI HANDOVER NOTE】
+1. DESIGN PHILOSOPHY:
+   - The 'Stadium Modernism' aesthetic blends high-stakes sports excitement with SaaS precision. This system is designed for the 'Site Bolão da Copa 2026', emphasizing hierarchy, data clarity, and competitive prestige.
+   - Visual Style: 'Victory Glass'. Uses subtle translucency and rim-lighting on cards to mimic premium sports broadcast graphics. A modular Bento-grid approach is required for the Dashboard and Ranking pages to handle dense information sets.
+   - Motivation: The World Cup 2026 demands a vibrant yet professional feel that inspires trust (for payments) and excitement (for the game).
+
+2. TYPOGRAPHY:
+   - Sans (Plus Jakarta Sans): Chosen for its geometric clarity and energetic 'open' counters. It feels modern and athletic, ideal for UI labels and headings.
+   - Mono (JetBrains Mono): Specifically reserved for scorelines (e.g., 2x1), match times, and ranking points. Its tabular figures ensure that vertical alignment in tables remains perfect during live score updates.
+
+3. COLOR SYSTEM:
+   - Brand Palette: Built around 'Victory Blue' (H: 260) for primary actions and 'Deep Stadium' (H: 225) for high-contrast depth.
+   - Primary Mapping: --primary is mapped to Victory Blue, representing the trophy and elite status. --accent uses a softer variation to highlight interaction states.
+   - Semantic Logic: Success uses 'Pitch Green' (H: 145) for winning predictions, while Destructive uses a high-visibility 'Penalty Red' (H: 25) for errors or negative actions.
+
+4. USAGE GUIDE:
+   - Layout: Use a Centered Container for informational pages (Rules, Teams) and a Full-width Sidebar layout for the Participant and Admin dashboards.
+   - Effects: Apply a subtle 'rim-light' (top border with 0.1 opacity white) on cards in dark mode to separate them from the background depth. 
+   - Ranking Page: Utilize zebra-striping with --muted/--background to maintain readability in long lists of participants.
+==========================================================================
+*/
+
+:root {
+  /* Typography */
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  
+  /* Radius */
+  --radius: 0.6rem;
+
+  /* Core UI Tokens */
+  --background: oklch(0.99 0.005 225);
+  --foreground: oklch(0.18 0.04 225);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.04 225);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.04 225);
+  --primary: oklch(0.6 0.18 260);
+  --primary-foreground: oklch(0.98 0.01 260);
+  --secondary: oklch(0.94 0.02 225);
+  --secondary-foreground: oklch(0.25 0.06 225);
+  --muted: oklch(0.96 0.01 225);
+  --muted-foreground: oklch(0.45 0.04 225);
+  --accent: oklch(0.92 0.03 225);
+  --accent-foreground: oklch(0.2 0.05 225);
+  --destructive: oklch(0.55 0.18 25);
+  --destructive-foreground: oklch(0.98 0.01 25);
+  --border: oklch(0.9 0.02 225);
+  --input: oklch(0.9 0.02 225);
+  --ring: oklch(0.6 0.18 260);
+  
+  /* Chart Tokens */
+  --chart-1: oklch(0.55 0.16 225);
+  --chart-2: oklch(0.6 0.18 145);
+  --chart-3: oklch(0.65 0.16 260);
+  --chart-4: oklch(0.5 0.15 280);
+  --chart-5: oklch(0.6 0.18 20);
+  
+  /* Sidebar Tokens */
+  --sidebar: oklch(0.98 0.01 225);
+  --sidebar-foreground: oklch(0.25 0.05 225);
+  --sidebar-primary: oklch(0.18 0.04 225);
+  --sidebar-primary-foreground: oklch(0.98 0.01 225);
+  --sidebar-accent: oklch(0.94 0.02 225);
+  --sidebar-accent-foreground: oklch(0.18 0.04 225);
+  --sidebar-border: oklch(0.92 0.02 225);
+  --sidebar-ring: oklch(0.6 0.18 260);
+}
+
+.dark {
+  --background: oklch(0.12 0.03 225);
+  --foreground: oklch(0.96 0.01 225);
+  --card: oklch(0.16 0.03 225);
+  --card-foreground: oklch(0.96 0.01 225);
+  --popover: oklch(0.14 0.03 225);
+  --popover-foreground: oklch(0.96 0.01 225);
+  --primary: oklch(0.7 0.18 260);
+  --primary-foreground: oklch(0.1 0.03 260);
+  --secondary: oklch(0.22 0.04 225);
+  --secondary-foreground: oklch(0.96 0.01 225);
+  --muted: oklch(0.2 0.03 225);
+  --muted-foreground: oklch(0.65 0.03 225);
+  --accent: oklch(0.25 0.05 225);
+  --accent-foreground: oklch(0.96 0.01 225);
+  --destructive: oklch(0.5 0.18 25);
+  --destructive-foreground: oklch(0.98 0.01 25);
+  --border: oklch(0.25 0.03 225);
+  --input: oklch(0.25 0.03 225);
+  --ring: oklch(0.7 0.18 260);
+  
+  /* Chart Tokens */
+  --chart-1: oklch(0.65 0.16 225);
+  --chart-2: oklch(0.7 0.18 145);
+  --chart-3: oklch(0.75 0.16 260);
+  --chart-4: oklch(0.6 0.15 280);
+  --chart-5: oklch(0.65 0.18 20);
+  
+  /* Sidebar Tokens */
+  --sidebar: oklch(0.1 0.03 225);
+  --sidebar-foreground: oklch(0.9 0.02 225);
+  --sidebar-primary: oklch(0.7 0.18 260);
+  --sidebar-primary-foreground: oklch(0.1 0.03 260);
+  --sidebar-accent: oklch(0.18 0.04 225);
+  --sidebar-accent-foreground: oklch(0.96 0.01 225);
+  --sidebar-border: oklch(0.2 0.03 225);
+  --sidebar-ring: oklch(0.7 0.18 260);
+}
+
+@theme inline {
+  /* Shadcn Core Mapping */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Charts Mapping */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Sidebar Mapping */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Typography */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Radius */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans min-h-screen;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  code, pre {
+    @apply font-mono;
+  }
+
+  ::selection {
+    @apply bg-primary/20 text-primary;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/40;
+  }
+}
