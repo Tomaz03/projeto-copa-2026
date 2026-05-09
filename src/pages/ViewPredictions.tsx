@@ -169,7 +169,7 @@ export default function ViewPredictions() {
           {matches.map((match) => {
             const prediction = predictionsMap[match.id];
             const points = prediction
-              ? calculatePoints(prediction.predicted_score_a, prediction.predicted_score_b, match.score_a, match.score_b)
+              ? calculatePoints(prediction.predicted_score_a, prediction.predicted_score_b, match.official_score_a, match.official_score_b)
               : 0;
 
             return (

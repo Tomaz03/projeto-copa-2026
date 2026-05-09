@@ -27,15 +27,19 @@ export default function Ranking() {
         setLoading(true);
         setError(null);
 
-        // Busca usuários aprovados ordenados pelos critérios de pontuação e desempate
+        // Busca usuários aprovados ordenados pelos critérios de desempate:
+        // 1º Pontos totais, 2º Placares exatos, 3º Resultados corretos, 4º Exatos no Brasil, 5º Pontos no Brasil, 6º Exatos nos EUA
         const { data, error: fetchError } = await supabase
           .from('profiles')
-          .select('id, name, full_name, total_points, exact_scores, correct_results')
+          .select('id, name, full_name, total_points, exact_scores, correct_results, exact_scores_brazil_group, points_brazil_group, exact_scores_usa_group')
           .eq('is_approved', true)
           .eq('is_admin', false)
           .order('total_points', { ascending: false })
           .order('exact_scores', { ascending: false })
-          .order('correct_results', { ascending: false });
+          .order('correct_results', { ascending: false })
+          .order('exact_scores_brazil_group', { ascending: false })
+          .order('points_brazil_group', { ascending: false })
+          .order('exact_scores_usa_group', { ascending: false });
 
         if (fetchError) throw fetchError;
 

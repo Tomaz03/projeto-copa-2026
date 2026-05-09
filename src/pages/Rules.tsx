@@ -156,10 +156,13 @@ export default function Rules() {
                       <span>Quem acertou o maior número de placares no grupo do Brasil.</span>
                     </li>
                     <li className="flex items-center gap-3 p-3 rounded-lg bg-accent/50">
-                      <span className="font-mono font-bold text-primary">03.</span>
-                      <span>Quem acertou o maior número de placares no grupo dos EUA.</span>
+                      <span className="font-mono font-bold text-primary">04.</span>
+                      <span>Quem acertou o maior número de pontos no grupo do Brasil.</span>
                     </li>
-                  </ol>
+                    <li className="flex items-center gap-3 p-3 rounded-lg bg-accent/50">
+                      <span className="font-mono font-bold text-primary">05.</span>
+                      <span>Quem acertou o maior número de placares no grupo dos EUA.</span>
+                    </li>                  </ol>
                 </CardContent>
               </Card>
             </motion.section>

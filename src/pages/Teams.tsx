@@ -31,11 +31,11 @@ const TEAMS_DATA: Team[] = [
   { id: 'mx', name: 'México', confederation: 'CONCACAF', rank: 15, keyPlayer: 'Santiago Giménez', titles: 0 },
   { id: 'za', name: 'África do Sul', confederation: 'CAF', rank: 59, keyPlayer: 'Percy Tau', titles: 0 },
   { id: 'kr', name: 'Coreia do Sul', confederation: 'AFC', rank: 22, keyPlayer: 'Son Heung-min', titles: 0 },
-  { id: 'un_a', name: 'Vencedor Play-off D', confederation: 'Playoff', rank: 0, keyPlayer: '-', titles: 0, isPlaceholder: true },
+  { id: 'cz', name: 'República Tcheca', confederation: 'UEFA', rank: 30, keyPlayer: 'Patrik Schick', titles: 0 },
 
   // GRUPO B
   { id: 'ca', name: 'Canadá', confederation: 'CONCACAF', rank: 35, keyPlayer: 'Alphonso Davies', titles: 0 },
-  { id: 'un_b', name: 'Vencedor Play-off A', confederation: 'Playoff', rank: 0, keyPlayer: '-', titles: 0, isPlaceholder: true },
+  { id: 'ba', name: 'Bósnia e Herzegovina', confederation: 'UEFA', rank: 74, keyPlayer: 'Edin Džeko', titles: 0 },
   { id: 'qa', name: 'Catar', confederation: 'AFC', rank: 34, keyPlayer: 'Akram Afif', titles: 0 },
   { id: 'ch', name: 'Suíça', confederation: 'UEFA', rank: 19, keyPlayer: 'Granit Xhaka', titles: 0 },
 
@@ -49,7 +49,7 @@ const TEAMS_DATA: Team[] = [
   { id: 'us', name: 'EUA', confederation: 'CONCACAF', rank: 11, keyPlayer: 'Christian Pulisic', titles: 0 },
   { id: 'py', name: 'Paraguai', confederation: 'CONMEBOL', rank: 55, keyPlayer: 'Miguel Almirón', titles: 0 },
   { id: 'au', name: 'Austrália', confederation: 'AFC', rank: 24, keyPlayer: 'Nestory Irankunda', titles: 0 },
-  { id: 'un_d', name: 'Vencedor Play-off C', confederation: 'Playoff', rank: 0, keyPlayer: '-', titles: 0, isPlaceholder: true },
+  { id: 'tr', name: 'Turquia', confederation: 'UEFA', rank: 26, keyPlayer: 'Hakan Çalhanoğlu', titles: 0 },
 
   // GRUPO E
   { id: 'de', name: 'Alemanha', confederation: 'UEFA', rank: 16, keyPlayer: 'Jamal Musiala', titles: 4 },
@@ -60,7 +60,7 @@ const TEAMS_DATA: Team[] = [
   // GRUPO F
   { id: 'nl', name: 'Holanda', confederation: 'UEFA', rank: 7, keyPlayer: 'Cody Gakpo', titles: 0 },
   { id: 'jp', name: 'Japão', confederation: 'AFC', rank: 18, keyPlayer: 'Takefusa Kubo', titles: 0 },
-  { id: 'un_f', name: 'Vencedor Play-off B', confederation: 'Playoff', rank: 0, keyPlayer: '-', titles: 0, isPlaceholder: true },
+  { id: 'se', name: 'Suécia', confederation: 'UEFA', rank: 28, keyPlayer: 'Alexander Isak', titles: 0 },
   { id: 'tn', name: 'Tunísia', confederation: 'CAF', rank: 41, keyPlayer: 'Ellyes Skhiri', titles: 0 },
 
   // GRUPO G
@@ -78,7 +78,7 @@ const TEAMS_DATA: Team[] = [
   // GRUPO I
   { id: 'fr', name: 'França', confederation: 'UEFA', rank: 2, keyPlayer: 'Kylian Mbappé', titles: 2 },
   { id: 'sn', name: 'Senegal', confederation: 'CAF', rank: 21, keyPlayer: 'Nicolas Jackson', titles: 0 },
-  { id: 'un_i', name: 'Vencedor Play-off 2', confederation: 'Playoff', rank: 0, keyPlayer: '-', titles: 0, isPlaceholder: true },
+  { id: 'iq', name: 'Iraque', confederation: 'AFC', rank: 58, keyPlayer: 'Aymen Hussein', titles: 0 },
   { id: 'no', name: 'Noruega', confederation: 'UEFA', rank: 47, keyPlayer: 'Erling Haaland', titles: 0 },
 
   // GRUPO J
@@ -89,7 +89,7 @@ const TEAMS_DATA: Team[] = [
 
   // GRUPO K
   { id: 'pt', name: 'Portugal', confederation: 'UEFA', rank: 8, keyPlayer: 'Bruno Fernandes', titles: 0 },
-  { id: 'un_k', name: 'Vencedor Play-off 1', confederation: 'Playoff', rank: 0, keyPlayer: '-', titles: 0, isPlaceholder: true },
+  { id: 'cd', name: 'RD Congo', confederation: 'CAF', rank: 61, keyPlayer: 'Yoane Wissa', titles: 0 },
   { id: 'uz', name: 'Uzbequistão', confederation: 'AFC', rank: 64, keyPlayer: 'Eldor Shomurodov', titles: 0 },
   { id: 'co', name: 'Colômbia', confederation: 'CONMEBOL', rank: 12, keyPlayer: 'Luis Díaz', titles: 0 },
 

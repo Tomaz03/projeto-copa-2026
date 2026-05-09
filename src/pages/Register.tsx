@@ -106,7 +106,7 @@ export default function Register() {
       // 2. Upload do comprovante para o Storage
       const fileExt = file.name.split('.').pop();
       const fileName = `${userId}-${Math.random()}.${fileExt}`;
-      const filePath = `receipts/${fileName}`;
+      const filePath = `${userId}/${fileName}`;
 
       const { error: uploadError } = await supabase.storage
         .from('payment_proofs')
@@ -118,17 +118,15 @@ export default function Register() {
         .from('payment_proofs')
         .getPublicUrl(filePath);
 
-      // 3. Inserir dados complementares na tabela profiles
+      // 3. Atualizar dados complementares na tabela profiles (o registro é criado via Trigger no Banco de Dados)
       const { error: dbError } = await supabase
         .from('profiles')
-        .insert({
-          id: userId,
+        .update({
           full_name: values.fullName,
-          name: values.fullName, // Adicionado para compatibilidade
+          name: values.fullName, // Mantido para compatibilidade
           payment_receipt_url: publicUrl,
-          is_approved: false,
-          is_admin: false,
-        });
+        })
+        .eq('id', userId);
 
       if (dbError) throw dbError;
 

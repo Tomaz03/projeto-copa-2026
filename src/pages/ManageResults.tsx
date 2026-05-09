@@ -216,7 +216,7 @@ export default function ManageResults() {
                             min="0"
                             max="20"
                             className="w-16 text-center bg-[#161b22] border-slate-700 text-white font-mono text-lg"
-                            value={isFinished ? (match.score_a ?? '') : matchScore.scoreA}
+                            value={isFinished ? (match.official_score_a ?? '') : matchScore.scoreA}
                             onChange={(e) => handleScoreChange(match.id, 'scoreA', e.target.value)}
                             placeholder="-"
                             disabled={isFinished}
@@ -227,7 +227,7 @@ export default function ManageResults() {
                             min="0"
                             max="20"
                             className="w-16 text-center bg-[#161b22] border-slate-700 text-white font-mono text-lg"
-                            value={isFinished ? (match.score_b ?? '') : matchScore.scoreB}
+                            value={isFinished ? (match.official_score_b ?? '') : matchScore.scoreB}
                             onChange={(e) => handleScoreChange(match.id, 'scoreB', e.target.value)}
                             placeholder="-"
                             disabled={isFinished}

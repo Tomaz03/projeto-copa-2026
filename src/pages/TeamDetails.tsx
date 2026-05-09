@@ -15,18 +15,6 @@ const getFlagUrl = (teamId: string) => {
         'sc': 'gb-sct',
         'wa': 'gb-wls',
         'nir': 'gb-nir',
-        'un_a': 'placeholder',
-        'un_b': 'placeholder',
-        'un_c': 'placeholder',
-        'un_d': 'placeholder',
-        'un_e': 'placeholder',
-        'un_f': 'placeholder',
-        'un_g': 'placeholder',
-        'un_h': 'placeholder',
-        'un_i': 'placeholder',
-        'un_j': 'placeholder',
-        'un_k': 'placeholder',
-        'un_l': 'placeholder',
     };
 
     if (teamId.startsWith('un_')) return null;
