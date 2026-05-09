@@ -4,24 +4,11 @@ import { ArrowLeft, Trophy, Calendar, MapPin, TrendingUp, Info } from 'lucide-re
 import { motion } from 'framer-motion';
 
 import { teamsData, TeamData } from '@/data/teamsData';
+import { getTeamFlag } from '@/lib/index';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-
-const getFlagUrl = (teamId: string) => {
-    const codes: Record<string, string> = {
-        'en': 'gb-eng',
-        'sc': 'gb-sct',
-        'wa': 'gb-wls',
-        'nir': 'gb-nir',
-    };
-
-    if (teamId.startsWith('un_')) return null;
-
-    const code = codes[teamId] || teamId;
-    return `https://flagcdn.com/${code}.svg`;
-};
 
 export default function TeamDetails() {
     const { teamId } = useParams<{ teamId: string }>();
@@ -38,7 +25,7 @@ export default function TeamDetails() {
         );
     }
 
-    const flagUrl = teamId ? getFlagUrl(teamId) : null;
+    const flagUrl = team ? getTeamFlag(team.name, 'svg') : null;
 
     return (
         <div className="min-h-screen bg-background pb-20 pt-24 px-4 container mx-auto">

@@ -12,7 +12,7 @@ import {
   Gamepad2,
   MapPin
 } from 'lucide-react';
-import { ROUTE_PATHS, Match, getTeamFlag } from '@/lib/index';
+import { ROUTE_PATHS, Match, getTeamFlag, getTeamDisplayName } from '@/lib/index';
 import { useMatches } from '@/hooks/useMatches';
 import { MatchCard } from '@/components/MatchCard';
 import { Input } from '@/components/ui/input';
@@ -199,7 +199,7 @@ export default function ManageResults() {
                       <div className="flex items-center justify-between gap-4 flex-wrap">
                         {/* Team A */}
                         <div className="flex-1 text-right min-w-[140px] flex items-center justify-end gap-3">
-                          <strong className="text-lg text-white">{match.team_a}</strong>
+                          <strong className="text-lg text-white">{getTeamDisplayName(match.team_a)}</strong>
                           <div className="w-10 h-7 bg-muted rounded overflow-hidden border border-slate-700">
                             <img
                               src={getTeamFlag(match.team_a)}
@@ -243,7 +243,7 @@ export default function ManageResults() {
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <strong className="text-lg text-white">{match.team_b}</strong>
+                          <strong className="text-lg text-white">{getTeamDisplayName(match.team_b)}</strong>
                         </div>
                       </div>
 
