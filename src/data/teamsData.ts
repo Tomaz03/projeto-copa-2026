@@ -119,12 +119,22 @@ export const teamsData: Record<string, TeamData> = {
             { opponent: 'Namíbia', score: '0 - 0', date: '09/09/2023', competition: 'Amistoso Internacional' }
         ]
     },
-    'un_a': {
-        name: 'Vencedor Play-off D',
+    'cz': {
+        name: 'República Tcheca',
         group: 'A',
-        wc_participations: '-',
-        qualifiers: { summary: 'Ainda em disputa', matches: '-', won: '-', drawn: '-', lost: '-' },
-        friendlies: []
+        wc_participations: 10,
+        qualifiers: {
+            summary: 'Classificado via UEFA. Desempenho sólido no Grupo F.',
+            matches: 10, won: 7, drawn: 2, lost: 1,
+            recent_matches: [
+                { opponent: 'Polônia', score: '1 - 1', date: '20/11/2025', competition: 'Eliminatórias da Copa' },
+                { opponent: 'Albânia', score: '2 - 0', date: '17/11/2025', competition: 'Eliminatórias da Copa' },
+                { opponent: 'Ilhas Faroe', score: '3 - 0', date: '15/10/2025', competition: 'Eliminatórias da Copa' }
+            ]
+        },
+        friendlies: [
+            { opponent: 'Brasil', score: '1 - 2', date: '23/03/2026', competition: 'Amistoso Internacional' }
+        ]
     },
 
     // GRUPO B
@@ -158,11 +168,18 @@ export const teamsData: Record<string, TeamData> = {
             { opponent: 'Japão', score: '1 - 4', date: '13/10/2023', competition: 'Amistoso Internacional' }
         ]
     },
-    'un_b': {
-        name: 'Vencedor Play-off A',
+    'ba': {
+        name: 'Bósnia e Herzegovina',
         group: 'B',
-        wc_participations: '-',
-        qualifiers: { summary: 'Ainda em disputa', matches: '-', won: '-', drawn: '-', lost: '-' },
+        wc_participations: 2,
+        qualifiers: {
+            summary: 'Classificado via repescagem da UEFA.',
+            matches: 12, won: 6, drawn: 3, lost: 3,
+            recent_matches: [
+                { opponent: 'Islândia', score: '2 - 1', date: '21/11/2025', competition: 'Repescagem UEFA' },
+                { opponent: 'Luxemburgo', score: '4 - 1', date: '16/11/2025', competition: 'Eliminatórias da Copa' }
+            ]
+        },
         friendlies: []
     },
     'qa': {
@@ -506,11 +523,18 @@ export const teamsData: Record<string, TeamData> = {
             { opponent: 'Nova Zelândia', score: '1 - 0', date: '05/09/2025', competition: 'Amistoso internacional' } //
         ]
     },
-    'un_d': {
-        name: 'Vencedor Play-off C',
+    'tr': {
+        name: 'Turquia',
         group: 'D',
-        wc_participations: '-',
-        qualifiers: { summary: 'Ainda em disputa', matches: '-', won: '-', drawn: '-', lost: '-' },
+        wc_participations: 3,
+        qualifiers: {
+            summary: 'Classificado via UEFA. Retorno às Copas após 24 anos.',
+            matches: 10, won: 6, drawn: 2, lost: 2,
+            recent_matches: [
+                { opponent: 'País de Gales', score: '1 - 1', date: '21/11/2025', competition: 'Eliminatórias da Copa' },
+                { opponent: 'Letônia', score: '4 - 0', date: '15/10/2025', competition: 'Eliminatórias da Copa' }
+            ]
+        },
         friendlies: []
     },
 
@@ -731,11 +755,18 @@ export const teamsData: Record<string, TeamData> = {
             { opponent: 'México', score: '0 - 0', date: '06/09/2025', competition: 'Amistoso Internacional' }
         ]
     },
-    'un_f': {
-        name: 'Vencedor Play-off B',
+    'se': {
+        name: 'Suécia',
         group: 'F',
-        wc_participations: '-',
-        qualifiers: { summary: 'Ainda em disputa', matches: '-', won: '-', drawn: '-', lost: '-' },
+        wc_participations: 13,
+        qualifiers: {
+            summary: 'Classificado via UEFA. Campanha consistente.',
+            matches: 10, won: 7, drawn: 1, lost: 2,
+            recent_matches: [
+                { opponent: 'Estônia', score: '2 - 0', date: '19/11/2025', competition: 'Eliminatórias da Copa' },
+                { opponent: 'Bélgica', score: '1 - 1', date: '16/10/2025', competition: 'Eliminatórias da Copa' }
+            ]
+        },
         friendlies: []
     },
     'tn': {
@@ -1157,11 +1188,18 @@ export const teamsData: Record<string, TeamData> = {
             { opponent: 'Irlanda', score: '1 - 1', date: '06/06/2025', competition: 'Amistoso internacional' }
         ]
     },
-    'un_i': {
-        name: 'Vencedor Play-off 2',
+    'iq': {
+        name: 'Iraque',
         group: 'I',
-        wc_participations: '-',
-        qualifiers: { summary: 'Ainda em disputa', matches: '-', won: '-', drawn: '-', lost: '-' },
+        wc_participations: 2,
+        qualifiers: {
+            summary: 'Classificado via AFC. Campanha histórica na Ásia.',
+            matches: 12, won: 8, drawn: 2, lost: 2,
+            recent_matches: [
+                { opponent: 'Vietnã', score: '3 - 2', date: '11/06/2025', competition: 'Eliminatórias da Ásia' },
+                { opponent: 'Indonésia', score: '2 - 0', date: '06/06/2025', competition: 'Eliminatórias da Ásia' }
+            ]
+        },
         friendlies: []
     },
     'no': {
@@ -1401,11 +1439,18 @@ export const teamsData: Record<string, TeamData> = {
             { opponent: 'Suécia', score: '5 - 2', date: '21/03/2024', competition: 'Amistoso Internacional' }
         ]
     },
-    'un_k': {
-        name: 'Vencedor Play-off 1',
+    'cd': {
+        name: 'RD Congo',
         group: 'K',
-        wc_participations: '-',
-        qualifiers: { summary: 'Ainda em disputa', matches: '-', won: '-', drawn: '-', lost: '-' },
+        wc_participations: 2,
+        qualifiers: {
+            summary: 'Classificado via CAF. Retorno do "Leopardo" ao mundial.',
+            matches: 10, won: 6, drawn: 3, lost: 1,
+            recent_matches: [
+                { opponent: 'Mauritânia', score: '2 - 0', date: '21/11/2025', competition: 'Eliminatórias - CAF' },
+                { opponent: 'Sudão', score: '1 - 0', date: '09/09/2025', competition: 'Eliminatórias - CAF' }
+            ]
+        },
         friendlies: []
     },
     'uz': {
