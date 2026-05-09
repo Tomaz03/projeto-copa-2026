@@ -1,4 +1,4 @@
-import { Match, formatScore, getTeamFlag } from "@/lib/index";
+import { Match, formatScore, getTeamFlag, getTeamDisplayName } from "@/lib/index";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, MapPin, Trophy } from "lucide-react";
@@ -69,7 +69,7 @@ export function MatchCard({ match, showResult = true }: MatchCardProps) {
                   }}
                 />
               </div>
-              <span className="text-sm font-bold tracking-tight">{match.team_a}</span>
+              <span className="text-sm font-bold tracking-tight">{getTeamDisplayName(match.team_a)}</span>
             </div>
 
             {/* Score Display */}
@@ -93,7 +93,7 @@ export function MatchCard({ match, showResult = true }: MatchCardProps) {
                   }}
                 />
               </div>
-              <span className="text-sm font-bold tracking-tight">{match.team_b}</span>
+              <span className="text-sm font-bold tracking-tight">{getTeamDisplayName(match.team_b)}</span>
             </div>
           </div>
 
