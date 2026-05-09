@@ -7,7 +7,8 @@ import {
   Match,
   Prediction,
   BOLAOO_CONFIG,
-  getTeamFlag
+  getTeamFlag,
+  getTeamDisplayName
 } from '@/lib/index';
 import { usePredictions } from '@/hooks/usePredictions';
 import { useAuth } from '@/hooks/useAuth';
@@ -99,7 +100,7 @@ export function PredictionForm({ match, prediction, onSave }: PredictionFormProp
                       }}
                     />
                   </div>
-                  <span className="font-semibold text-sm md:text-base text-center">{match.team_a}</span>
+                  <span className="font-semibold text-sm md:text-base text-center">{getTeamDisplayName(match.team_a)}</span>
                   <FormField
                     control={form.control}
                     name="homeScore"
@@ -137,7 +138,7 @@ export function PredictionForm({ match, prediction, onSave }: PredictionFormProp
                       }}
                     />
                   </div>
-                  <span className="font-semibold text-sm md:text-base text-center">{match.team_b}</span>
+                  <span className="font-semibold text-sm md:text-base text-center">{getTeamDisplayName(match.team_b)}</span>
                   <FormField
                     control={form.control}
                     name="awayScore"
