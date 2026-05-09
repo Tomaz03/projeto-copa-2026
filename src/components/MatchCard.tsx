@@ -75,9 +75,9 @@ export function MatchCard({ match, showResult = true }: MatchCardProps) {
             {/* Score Display */}
             <div className="col-span-1 flex flex-col items-center justify-center">
               <div className="text-2xl font-mono font-bold flex items-center gap-1 tabular-nums">
-                <span>{showResult ? formatScore(match.score_a) : "-"}</span>
+                <span>{showResult ? formatScore(match.official_score_a) : "-"}</span>
                 <span className="text-muted-foreground/30 text-lg">x</span>
-                <span>{showResult ? formatScore(match.score_b) : "-"}</span>
+                <span>{showResult ? formatScore(match.official_score_b) : "-"}</span>
               </div>
             </div>
 
