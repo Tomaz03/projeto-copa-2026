@@ -55,8 +55,8 @@ export const useMatches = () => {
       is_finished?: boolean;
     }) => {
       const updateData: any = { is_finished };
-      if (home_score !== undefined) updateData.score_a = home_score;
-      if (away_score !== undefined) updateData.score_b = away_score;
+      if (home_score !== undefined) updateData.official_score_a = home_score;
+      if (away_score !== undefined) updateData.official_score_b = away_score;
       if (stadium !== undefined) updateData.stadium = stadium;
       if (match_date !== undefined) updateData.match_date = match_date;
 

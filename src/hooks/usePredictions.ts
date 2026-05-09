@@ -1,9 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { 
-  Prediction, 
-  BOLAOO_CONFIG, 
-  Match 
+import {
+  Prediction,
+  BOLAOO_CONFIG,
+  Match
 } from '@/lib/index';
 import { toast } from 'sonner';
 
@@ -11,15 +11,15 @@ export const usePredictions = (userId?: string) => {
   const queryClient = useQueryClient();
 
   // Busca todos os palpites de um usuário específico
-  const { 
-    data: predictions = [], 
-    isLoading, 
-    error 
+  const {
+    data: predictions = [],
+    isLoading,
+    error
   } = useQuery({
     queryKey: ['predictions', userId],
     queryFn: async () => {
       if (!userId) return [];
-      
+
       const { data, error } = await supabase
         .from('predictions')
         .select('*')
@@ -43,14 +43,14 @@ export const usePredictions = (userId?: string) => {
 
   // Mutação para salvar ou atualizar um palpite
   const savePredictionMutation = useMutation({
-    mutationFn: async ({ 
-      match, 
-      homeScore, 
-      awayScore 
-    }: { 
-      match: Match; 
-      homeScore: number; 
-      awayScore: number; 
+    mutationFn: async ({
+      match,
+      homeScore,
+      awayScore
+    }: {
+      match: Match;
+      homeScore: number;
+      awayScore: number;
     }) => {
       if (!userId) throw new Error('Usuário não autenticado');
 
@@ -74,8 +74,8 @@ export const usePredictions = (userId?: string) => {
       const predictionData = {
         user_id: userId,
         match_id: match.id,
-        home_score: homeScore,
-        away_score: awayScore,
+        predicted_score_a: homeScore,
+        predicted_score_b: awayScore,
         updated_at: new Date().toISOString(),
       };
 
@@ -84,13 +84,13 @@ export const usePredictions = (userId?: string) => {
           .from('predictions')
           .update(predictionData)
           .eq('id', existing.id);
-        
+
         if (updateError) throw updateError;
       } else {
         const { error: insertError } = await supabase
           .from('predictions')
           .insert([{ ...predictionData, created_at: new Date().toISOString() }]);
-        
+
         if (insertError) throw insertError;
       }
 
