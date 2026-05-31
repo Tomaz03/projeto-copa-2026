@@ -2,8 +2,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import {
   Prediction,
-  BOLAOO_CONFIG,
-  Match
+  Match,
+  areTournamentPredictionsLocked
 } from '@/lib/index';
 import { toast } from 'sonner';
 
@@ -46,20 +46,18 @@ export const usePredictions = (userId?: string) => {
     mutationFn: async ({
       match,
       homeScore,
-      awayScore
+      awayScore,
+      matches = [match]
     }: {
       match: Match;
       homeScore: number;
       awayScore: number;
+      matches?: Match[];
     }) => {
       if (!userId) throw new Error('Usuário não autenticado');
 
       // Validação de prazo limite (lock time)
-      const matchTime = new Date(match.match_date).getTime();
-      const currentTime = new Date().getTime();
-      const lockTimeLimit = BOLAOO_CONFIG.MAX_PREDICTION_TIME_BEFORE_MATCH * 60 * 1000;
-
-      if (currentTime > (matchTime - lockTimeLimit)) {
+      if (areTournamentPredictionsLocked(matches)) {
         throw new Error('O prazo para palpitar nesta partida expirou.');
       }
 
