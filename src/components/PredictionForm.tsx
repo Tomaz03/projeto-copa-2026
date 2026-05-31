@@ -2,11 +2,11 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Save, Lock, Trophy } from 'lucide-react';
+import { Save, Lock } from 'lucide-react';
 import {
   Match,
   Prediction,
-  BOLAOO_CONFIG,
+  areTournamentPredictionsLocked,
   getTeamFlag,
   getTeamDisplayName
 } from '@/lib/index';
@@ -25,14 +25,21 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 import { springPresets } from '@/lib/motion';
+import { toast } from 'sonner';
+
+const requiredScoresMessage = 'O participante tem que colocar os palpites de ambos os times.';
+
+const scoreSchema = z
+  .string()
+  .trim()
+  .min(1, requiredScoresMessage)
+  .refine((val) => !Number.isNaN(Number(val)) && Number(val) >= 0, {
+    message: 'Placar inválido',
+  });
 
 const predictionSchema = z.object({
-  homeScore: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
-    message: 'Placar inválido',
-  }),
-  awayScore: z.string().refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
-    message: 'Placar inválido',
-  }),
+  homeScore: scoreSchema,
+  awayScore: scoreSchema,
 });
 
 type PredictionFormValues = z.infer<typeof predictionSchema>;
@@ -40,19 +47,21 @@ type PredictionFormValues = z.infer<typeof predictionSchema>;
 interface PredictionFormProps {
   match: Match;
   prediction?: Prediction;
+  matches?: Match[];
   onSave: () => void;
 }
 
-export function PredictionForm({ match, prediction, onSave }: PredictionFormProps) {
+export function PredictionForm({ match, prediction, matches = [match], onSave }: PredictionFormProps) {
   const { user } = useAuth();
   const { savePrediction, isSaving } = usePredictions(user?.id);
+  const [isEditingSavedPrediction, setIsEditingSavedPrediction] = React.useState(false);
+  const hasSavedPrediction = Boolean(prediction);
+  const isEditButtonMode = hasSavedPrediction && !isEditingSavedPrediction;
 
   const isLocked = React.useMemo(() => {
-    const matchTime = new Date(match.match_date).getTime();
-    const currentTime = new Date().getTime();
-    const lockTimeLimit = BOLAOO_CONFIG.MAX_PREDICTION_TIME_BEFORE_MATCH * 60 * 1000;
-    return currentTime > (matchTime - lockTimeLimit);
-  }, [match.match_date]);
+    return areTournamentPredictionsLocked(matches);
+  }, [matches]);
+  const canEditScores = !isLocked && !isSaving && (!hasSavedPrediction || isEditingSavedPrediction);
 
   const form = useForm<PredictionFormValues>({
     resolver: zodResolver(predictionSchema),
@@ -64,17 +73,31 @@ export function PredictionForm({ match, prediction, onSave }: PredictionFormProp
 
   async function onSubmit(values: PredictionFormValues) {
     if (isLocked) return;
+    if (isEditButtonMode) {
+      setIsEditingSavedPrediction(true);
+      toast.info('Altere o seu palpite agora');
+      return;
+    }
 
     try {
       await savePrediction({
         match,
         homeScore: parseInt(values.homeScore),
         awayScore: parseInt(values.awayScore),
+        matches,
       });
+      setIsEditingSavedPrediction(false);
       onSave();
     } catch (error) {
       // Erro já tratado no hook usePredictions com toast
     }
+  }
+
+  function handleEditClick(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsEditingSavedPrediction(true);
+    toast.info('Altere o seu palpite agora');
   }
 
   return (
@@ -110,7 +133,7 @@ export function PredictionForm({ match, prediction, onSave }: PredictionFormProp
                           <Input
                             {...field}
                             type="number"
-                            disabled={isLocked || isSaving}
+                            disabled={!canEditScores}
                             placeholder="0"
                             className="text-center font-mono text-xl h-12 focus:ring-primary"
                           />
@@ -148,7 +171,7 @@ export function PredictionForm({ match, prediction, onSave }: PredictionFormProp
                           <Input
                             {...field}
                             type="number"
-                            disabled={isLocked || isSaving}
+                            disabled={!canEditScores}
                             placeholder="0"
                             className="text-center font-mono text-xl h-12 focus:ring-primary"
                           />
@@ -161,32 +184,54 @@ export function PredictionForm({ match, prediction, onSave }: PredictionFormProp
               </div>
 
               <div className="flex flex-col gap-3">
-                <Button
-                  type="submit"
-                  className="w-full h-12 font-semibold transition-all"
-                  disabled={isLocked || isSaving}
-                  variant={isLocked ? "secondary" : "default"}
-                >
-                  {isSaving ? (
-                    <span className="flex items-center gap-2 animate-pulse">
-                      Salvando...
-                    </span>
-                  ) : isLocked ? (
-                    <span className="flex items-center gap-2">
-                      <Lock className="w-4 h-4" />
-                      Prazo Encerrado
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-2">
-                      <Save className="w-4 h-4" />
-                      Salvar Palpite
-                    </span>
-                  )}
-                </Button>
+                {isEditButtonMode ? (
+                  <Button
+                    type="button"
+                    onClick={handleEditClick}
+                    className="w-full h-12 font-semibold transition-all"
+                    disabled={isLocked || isSaving}
+                    variant={isLocked ? "secondary" : "default"}
+                  >
+                    {isLocked ? (
+                      <span className="flex items-center gap-2">
+                        <Lock className="w-4 h-4" />
+                        Prazo Encerrado
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        <Save className="w-4 h-4" />
+                        Editar Palpite
+                      </span>
+                    )}
+                  </Button>
+                ) : (
+                  <Button
+                    type="submit"
+                    className="w-full h-12 font-semibold transition-all"
+                    disabled={isLocked || isSaving}
+                    variant={isLocked ? "secondary" : "default"}
+                  >
+                    {isSaving ? (
+                      <span className="flex items-center gap-2 animate-pulse">
+                        Salvando...
+                      </span>
+                    ) : isLocked ? (
+                      <span className="flex items-center gap-2">
+                        <Lock className="w-4 h-4" />
+                        Prazo Encerrado
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        <Save className="w-4 h-4" />
+                        Salvar Palpite
+                      </span>
+                    )}
+                  </Button>
+                )}
 
                 {isLocked && (
                   <p className="text-[11px] text-center text-muted-foreground">
-                    O prazo para palpites encerra {BOLAOO_CONFIG.MAX_PREDICTION_TIME_BEFORE_MATCH} minutos antes do início.
+                    Os jogos estão bloqueados para qualquer alteração conforme as regras do bolão.
                   </p>
                 )}
               </div>

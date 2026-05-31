@@ -9,17 +9,19 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Eye, Trophy, Medal } from 'lucide-react';
+import { Eye, Trophy, Medal, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { RankingEntry } from '@/lib/index';
+import { RankingEntry, canViewUserPredictions, Match } from '@/lib/index';
 import { cn } from '@/lib/utils';
 
 interface RankingTableProps {
   rankings: RankingEntry[];
   onViewPredictions: (userId: string) => void;
+  matches: Match[];
+  currentUserId?: string | null;
 }
 
-export function RankingTable({ rankings, onViewPredictions }: RankingTableProps) {
+export function RankingTable({ rankings, onViewPredictions, matches, currentUserId }: RankingTableProps) {
   const getPositionIcon = (position: number) => {
     switch (position) {
       case 1:
@@ -64,6 +66,8 @@ export function RankingTable({ rankings, onViewPredictions }: RankingTableProps)
             ) : (
               rankings.map((user, index) => {
                 const position = user.position || index + 1;
+                const canViewPredictions = canViewUserPredictions(matches, currentUserId, user.id);
+
                 return (
                   <motion.tr
                     key={user.id}
@@ -105,11 +109,24 @@ export function RankingTable({ rankings, onViewPredictions }: RankingTableProps)
                       <Button
                         variant="ghost"
                         size="sm"
+                        disabled={!canViewPredictions}
                         onClick={() => onViewPredictions(user.id)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary/10 hover:text-primary"
+                        title={canViewPredictions ? 'Ver palpites' : 'Liberado 1 dia antes do início da Copa'}
+                        className={cn(
+                          "opacity-0 group-hover:opacity-100 transition-opacity",
+                          canViewPredictions
+                            ? "hover:bg-primary/10 hover:text-primary"
+                            : "cursor-not-allowed text-muted-foreground"
+                        )}
                       >
-                        <Eye className="h-4 w-4 mr-2" />
-                        <span className="hidden lg:inline">Ver Palpites</span>
+                        {canViewPredictions ? (
+                          <Eye className="h-4 w-4 mr-2" />
+                        ) : (
+                          <Lock className="h-4 w-4 mr-2" />
+                        )}
+                        <span className="hidden lg:inline">
+                          {canViewPredictions ? 'Ver Palpites' : 'Bloqueado'}
+                        </span>
                       </Button>
                     </TableCell>
                   </motion.tr>
