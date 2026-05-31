@@ -105,7 +105,6 @@ export default function MyPredictions() {
         <div className="sticky top-[calc(var(--header-height)+1px)] z-30 bg-background/95 backdrop-blur-md py-4 border-b border-border mb-8 overflow-x-auto">
           <TabsList className="inline-flex h-12 items-center justify-start bg-muted/50 p-1 rounded-lg border border-border/50">
             {groups
-              .filter(group => ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L'].includes(group))
               .map((group) => (
                 <TabsTrigger
                   key={group}
@@ -119,7 +118,6 @@ export default function MyPredictions() {
         </div>
 
         {groups
-          .filter(group => ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L'].includes(group))
           .map((group) => (
             <TabsContent
               key={group}

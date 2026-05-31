@@ -40,7 +40,7 @@ export default function ManageResults() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGroup, setSelectedGroup] = useState('A');
 
-  const groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'L'];
+  const groups = Array.from(new Set(matches.map(match => match.group_name))).sort();
 
   const handleScoreChange = (matchId: string, side: 'scoreA' | 'scoreB' | 'stadium', value: string) => {
     // Apenas números para os scores
