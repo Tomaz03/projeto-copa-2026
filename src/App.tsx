@@ -94,7 +94,14 @@ const AppRoutes = () => {
         <Route path={ROUTE_PATHS.TEAMS} element={<Teams />} />
         <Route path={ROUTE_PATHS.TEAM_DETAILS} element={<TeamDetails />} />
         <Route path={ROUTE_PATHS.RANKING} element={<Ranking />} />
-        <Route path={ROUTE_PATHS.VIEW_PREDICTIONS} element={<ViewPredictions />} />
+        <Route
+          path={ROUTE_PATHS.VIEW_PREDICTIONS}
+          element={
+            <ProtectedRoute>
+              <ViewPredictions />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Rotas Protegidas (Usuário Comum) */}
         <Route
