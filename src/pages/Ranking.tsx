@@ -13,9 +13,13 @@ import { IMAGES } from '@/assets/images';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useAuth } from '@/hooks/useAuth';
+import { useMatches } from '@/hooks/useMatches';
 
 export default function Ranking() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { matches, isLoading: isLoadingMatches } = useMatches();
   const [rankings, setRankings] = useState<RankingEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -146,7 +150,7 @@ export default function Ranking() {
               </Alert>
             )}
 
-            {loading ? (
+            {loading || isLoadingMatches ? (
               <div className="bg-card rounded-xl border border-border p-8 space-y-4">
                 {[...Array(8)].map((_, i) => (
                   <div key={i} className="flex items-center gap-4">
@@ -164,6 +168,8 @@ export default function Ranking() {
                 <RankingTable
                   rankings={filteredRankings}
                   onViewPredictions={handleViewPredictions}
+                  matches={matches}
+                  currentUserId={user?.id}
                 />
 
                 {filteredRankings.length === 0 && !error && (

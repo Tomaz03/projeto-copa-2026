@@ -192,6 +192,7 @@ export default function MyPredictions() {
                                   <PredictionForm
                                     match={match}
                                     prediction={getPredictionByMatchId(match.id)}
+                                    matches={matches}
                                     onSave={() => { }}
                                   />
                                 </div>

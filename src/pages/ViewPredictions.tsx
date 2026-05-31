@@ -8,9 +8,11 @@ import {
   Match,
   Prediction,
   User,
-  calculatePoints
+  calculatePoints,
+  canViewUserPredictions
 } from '@/lib/index';
 import { useMatches } from '@/hooks/useMatches';
+import { useAuth } from '@/hooks/useAuth';
 import { MatchCard } from '@/components/MatchCard';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -26,7 +28,9 @@ import { Separator } from '@/components/ui/separator';
  */
 export default function ViewPredictions() {
   const { userId } = useParams<{ userId: string }>();
+  const { user, loading: isLoadingAuth } = useAuth();
   const { matches, isLoading: isLoadingMatches } = useMatches();
+  const canViewPredictions = canViewUserPredictions(matches, user?.id, userId);
 
   // Busca os dados do usuário alvo
   const { data: targetUser, isLoading: isLoadingUser } = useQuery<User>({
@@ -59,10 +63,10 @@ export default function ViewPredictions() {
       if (error) throw error;
       return data as Prediction[];
     },
-    enabled: !!userId,
+    enabled: !!userId && canViewPredictions,
   });
 
-  const isLoading = isLoadingMatches || isLoadingUser || isLoadingPredictions;
+  const isLoading = isLoadingAuth || isLoadingMatches || isLoadingUser || (canViewPredictions && isLoadingPredictions);
 
   // Mapeia palpites por ID da partida para acesso rápido
   const predictionsMap = React.useMemo(() => {
@@ -97,6 +101,26 @@ export default function ViewPredictions() {
         <Button asChild variant="secondary">
           <Link to={ROUTE_PATHS.RANKING}>Voltar para o Ranking</Link>
         </Button>
+      </div>
+    );
+  }
+
+  if (!canViewPredictions) {
+    return (
+      <div className="container mx-auto px-4 py-12 text-center">
+        <div className="mx-auto max-w-xl rounded-2xl border border-border bg-card p-8 shadow-sm">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+            <Calendar className="h-6 w-6 text-muted-foreground" />
+          </div>
+          <h2 className="text-2xl font-bold mb-3">Palpites ainda privados</h2>
+          <p className="text-muted-foreground mb-6">
+            Antes do bloqueio geral, cada participante sÃ³ pode visualizar os prÃ³prios palpites.
+            Os palpites dos outros usuÃ¡rios serÃ£o liberados 1 dia antes do inÃ­cio da Copa.
+          </p>
+          <Button asChild variant="secondary">
+            <Link to={ROUTE_PATHS.RANKING}>Voltar para o Ranking</Link>
+          </Button>
+        </div>
       </div>
     );
   }

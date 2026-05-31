@@ -294,7 +294,7 @@ export default function Rules() {
               </div>
               <h3 className="font-bold mb-2">Transparência</h3>
               <p className="text-sm text-muted-foreground">
-                Após o início de cada partida, os palpites de todos os usuários tornam-se públicos para consulta no Ranking.
+                Após o bloqueio geral, 1 dia antes do início da Copa, os palpites de todos os usuários tornam-se públicos para consulta no Ranking.
               </p>
             </div>
 
