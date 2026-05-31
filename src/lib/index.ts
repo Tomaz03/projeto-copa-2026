@@ -118,7 +118,47 @@ export const BOLAOO_CONFIG = {
   YEAR: 2026,
   TITLE: 'Bolão da Copa 2026',
   PIX_KEY: '92413684387',
-  MAX_PREDICTION_TIME_BEFORE_MATCH: 30, // minutos antes do jogo para travar palpites
+  PREDICTION_LOCK_DAYS_BEFORE_TOURNAMENT: 1,
+};
+
+export const getTournamentStartDate = (matches: Match[]): Date | null => {
+  const timestamps = matches
+    .map((match) => new Date(match.match_date).getTime())
+    .filter((timestamp) => !Number.isNaN(timestamp));
+
+  if (timestamps.length === 0) return null;
+
+  return new Date(Math.min(...timestamps));
+};
+
+export const getTournamentPredictionLockDate = (matches: Match[]): Date | null => {
+  const tournamentStartDate = getTournamentStartDate(matches);
+  if (!tournamentStartDate) return null;
+
+  const lockOffsetMs = BOLAOO_CONFIG.PREDICTION_LOCK_DAYS_BEFORE_TOURNAMENT * 24 * 60 * 60 * 1000;
+  return new Date(tournamentStartDate.getTime() - lockOffsetMs);
+};
+
+export const areTournamentPredictionsLocked = (
+  matches: Match[],
+  referenceDate: Date = new Date()
+): boolean => {
+  const lockDate = getTournamentPredictionLockDate(matches);
+  if (!lockDate) return false;
+
+  return referenceDate.getTime() >= lockDate.getTime();
+};
+
+export const canViewUserPredictions = (
+  matches: Match[],
+  viewerUserId?: string | null,
+  targetUserId?: string | null,
+  referenceDate: Date = new Date()
+): boolean => {
+  if (!viewerUserId || !targetUserId) return false;
+  if (viewerUserId === targetUserId) return true;
+
+  return areTournamentPredictionsLocked(matches, referenceDate);
 };
 
 /**
