@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Trophy, Search, Users, TrendingUp, Info } from 'lucide-react';
+import { Trophy, Search, Users, TrendingUp, Info, CircleDollarSign } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import {
   ROUTE_PATHS,
@@ -72,6 +72,17 @@ export default function Ranking() {
     );
   }, [rankings, searchTerm]);
 
+  const prizePool = useMemo(() => {
+    return rankings.length * BOLAOO_CONFIG.ENTRY_FEE;
+  }, [rankings.length]);
+
+  const formattedPrizePool = useMemo(() => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(prizePool);
+  }, [prizePool]);
+
   const handleViewPredictions = (userId: string) => {
     navigate(ROUTE_PATHS.VIEW_PREDICTIONS.replace(':userId', userId));
   };
@@ -129,6 +140,10 @@ export default function Ranking() {
             </div>
 
             <div className="flex items-center gap-6 text-sm font-medium">
+              <div className="flex items-center gap-2">
+                <CircleDollarSign className="w-4 h-4 text-primary" />
+                <span>Premiação Total {formattedPrizePool}</span>
+              </div>
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-primary" />
                 <span>{rankings.length} Participantes</span>
