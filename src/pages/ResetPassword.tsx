@@ -35,22 +35,57 @@ export default function ResetPassword() {
   const [searchParams] = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
+  const [canResetPassword, setCanResetPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // O Supabase geralmente lida com tokens de recuperação automaticamente através da URL fragmentada
-  // Mas podemos verificar se o usuário está em uma sessão de recuperação
   useEffect(() => {
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      // Se não houver sessão ativa vinda do link de recuperação, redirecionamos para login
-      if (!session) {
-        // O Supabase auth onAuthStateChange deve capturar o evento de recuperação
-        // Caso contrário, o link expirou ou é inválido
+    const initializeRecoverySession = async () => {
+      setIsCheckingSession(true);
+      setError(null);
+
+      try {
+        const code = searchParams.get('code');
+
+        if (code) {
+          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+          if (exchangeError) throw exchangeError;
+        } else if (window.location.hash) {
+          const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+          const accessToken = hashParams.get('access_token');
+          const refreshToken = hashParams.get('refresh_token');
+
+          if (accessToken && refreshToken) {
+            const { error: sessionError } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken,
+            });
+
+            if (sessionError) throw sessionError;
+            window.history.replaceState(null, document.title, window.location.pathname);
+          }
+        }
+
+        const { data: { session } } = await supabase.auth.getSession();
+
+        if (!session) {
+          setCanResetPassword(false);
+          setError('Link de recuperação inválido ou expirado. Solicite um novo link para redefinir sua senha.');
+          return;
+        }
+
+        setCanResetPassword(true);
+      } catch (err: any) {
+        setCanResetPassword(false);
+        setError(err.message || 'Não foi possível validar seu link de recuperação.');
+      } finally {
+        setIsCheckingSession(false);
       }
     };
-    checkSession();
-  }, []);
+
+    initializeRecoverySession();
+  }, [searchParams]);
 
   const form = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -65,6 +100,10 @@ export default function ResetPassword() {
     setError(null);
 
     try {
+      if (!canResetPassword) {
+        throw new Error('Solicite um novo link de recuperação antes de alterar sua senha.');
+      }
+
       const { error: updateError } = await supabase.auth.updateUser({
         password: values.password,
       });
@@ -110,7 +149,12 @@ export default function ResetPassword() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {isSuccess ? (
+            {isCheckingSession ? (
+              <div className="flex flex-col items-center justify-center gap-3 py-8 text-muted-foreground">
+                <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                <p className="text-sm">Validando link de recuperação...</p>
+              </div>
+            ) : isSuccess ? (
               <div className="space-y-4 py-4">
                 <Alert className="bg-green-500/10 border-green-500/20 text-green-600 dark:text-green-400">
                   <CheckCircle2 className="h-5 w-5" />
@@ -126,7 +170,7 @@ export default function ResetPassword() {
                   Ir para o Login
                 </Button>
               </div>
-            ) : (
+            ) : canResetPassword ? (
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                   {error && (
@@ -213,6 +257,22 @@ export default function ResetPassword() {
                   </div>
                 </form>
               </Form>
+            ) : (
+              <div className="space-y-4 py-4">
+                {error && (
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Não foi possível redefinir</AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
+                <Button
+                  className="w-full"
+                  onClick={() => navigate(ROUTE_PATHS.FORGOT_PASSWORD)}
+                >
+                  Solicitar novo link
+                </Button>
+              </div>
             )}
           </CardContent>
         </Card>

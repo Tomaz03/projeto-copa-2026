@@ -27,6 +27,13 @@ const forgotPasswordSchema = z.object({
 
 type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
 
+const getPasswordResetRedirectUrl = () => {
+  const configuredAppUrl = import.meta.env.VITE_APP_URL?.trim();
+  const baseUrl = configuredAppUrl || window.location.origin;
+
+  return `${baseUrl.replace(/\/$/, '')}${ROUTE_PATHS.RESET_PASSWORD}`;
+};
+
 /**
  * Página para recuperação de senha.
  * Permite que o usuário insira seu e-mail para receber um link de redefinição via Supabase Auth.
@@ -50,8 +57,20 @@ export default function ForgotPassword() {
     setError(null);
 
     try {
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(data.email, {
-        redirectTo: `${window.location.origin}${ROUTE_PATHS.RESET_PASSWORD}`,
+      const normalizedEmail = data.email.trim().toLowerCase();
+
+      const { data: emailExists, error: emailCheckError } = await supabase
+        .rpc('profile_email_exists', { lookup_email: normalizedEmail });
+
+      if (emailCheckError) throw emailCheckError;
+
+      if (!emailExists) {
+        setError('Não encontramos nenhum participante cadastrado com esse e-mail.');
+        return;
+      }
+
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+        redirectTo: getPasswordResetRedirectUrl(),
       });
 
       if (resetError) throw resetError;
@@ -59,7 +78,7 @@ export default function ForgotPassword() {
       setIsSuccess(true);
       toast({
         title: 'E-mail enviado',
-        description: 'Instruções para redefinir sua senha foram enviadas para seu e-mail.',
+        description: 'Enviamos o link para você criar uma nova senha.',
       });
     } catch (err: any) {
       console.error('Erro ao enviar e-mail de recuperação:', err);
@@ -116,7 +135,7 @@ export default function ForgotPassword() {
                   <CheckCircle2 className="h-5 w-5 text-primary" />
                   <AlertTitle className="font-bold">Link Enviado!</AlertTitle>
                   <AlertDescription className="text-foreground/80">
-                    Verifique sua caixa de entrada. Enviamos um link de redefinição para o endereço informado.
+                    Verifique sua caixa de entrada. Ao abrir o link, você será levado para a página de nova senha.
                   </AlertDescription>
                 </Alert>
                 <p className="text-xs text-muted-foreground text-center italic">
@@ -166,7 +185,7 @@ export default function ForgotPassword() {
                       Processando...
                     </>
                   ) : (
-                    'Enviar Link de Recuperação'
+                    'Continuar'
                   )}
                 </Button>
               </form>
