@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -33,6 +34,25 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+const RecoveryRedirect = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!window.location.hash) return;
+
+    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+    const hasRecoveryToken =
+      hashParams.get("type") === "recovery" ||
+      (hashParams.has("access_token") && hashParams.has("refresh_token"));
+
+    if (hasRecoveryToken && window.location.pathname !== ROUTE_PATHS.RESET_PASSWORD) {
+      navigate(`${ROUTE_PATHS.RESET_PASSWORD}${window.location.hash}`, { replace: true });
+    }
+  }, [navigate]);
+
+  return null;
+};
 
 /**
  * Componente para proteger rotas que exigem autenticação básica
@@ -160,6 +180,7 @@ const App = () => {
       <TooltipProvider>
         <AuthProvider>
           <BrowserRouter>
+            <RecoveryRedirect />
             <AppRoutes />
             <Toaster />
             <Sonner position="top-right" />
