@@ -53,6 +53,17 @@ export default function ResetPassword() {
           if (exchangeError) throw exchangeError;
         } else if (window.location.hash) {
           const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+          const errorCode = hashParams.get('error_code');
+          const errorDescription = hashParams.get('error_description');
+
+          if (errorCode) {
+            throw new Error(
+              errorCode === 'otp_expired'
+                ? 'Link de recuperação expirado ou já utilizado. Solicite um novo link e abra apenas o e-mail mais recente.'
+                : errorDescription?.replace(/\+/g, ' ') || 'Link de recuperação inválido. Solicite um novo link.'
+            );
+          }
+
           const accessToken = hashParams.get('access_token');
           const refreshToken = hashParams.get('refresh_token');
 
