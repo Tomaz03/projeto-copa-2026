@@ -14,6 +14,25 @@
 
   <body>
     <div id="root"></div>
+    <script>
+      (function () {
+        if (!window.location.hash || window.location.pathname === "/reset-password") return;
+
+        var hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+        var hasRecoveryToken =
+          hashParams.get("type") === "recovery" ||
+          hashParams.has("access_token") ||
+          hashParams.has("refresh_token");
+
+        if (hasRecoveryToken) {
+          window.history.replaceState(
+            null,
+            document.title,
+            "/reset-password" + window.location.hash
+          );
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
