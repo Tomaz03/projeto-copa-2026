@@ -9,7 +9,8 @@ const redirectRecoveryTokenToResetPage = () => {
   const hasRecoveryToken =
     hashParams.get('type') === 'recovery' ||
     hashParams.has('access_token') ||
-    hashParams.has('refresh_token');
+    hashParams.has('refresh_token') ||
+    hashParams.has('error_code');
 
   if (hasRecoveryToken) {
     window.history.replaceState(
