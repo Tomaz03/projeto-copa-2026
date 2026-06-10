@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Eye, Trophy, Medal, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { RankingEntry, canViewUserPredictions, Match } from '@/lib/index';
+import { RankingEntry, canViewUserPredictions, Match, BOLAOO_CONFIG } from '@/lib/index';
 import { cn } from '@/lib/utils';
 
 interface RankingTableProps {
@@ -111,7 +111,7 @@ export function RankingTable({ rankings, onViewPredictions, matches, currentUser
                         size="sm"
                         disabled={!canViewPredictions}
                         onClick={() => onViewPredictions(user.id)}
-                        title={canViewPredictions ? 'Ver palpites' : 'Liberado 1 dia antes do início da Copa'}
+                        title={canViewPredictions ? 'Ver palpites' : `Liberado após ${BOLAOO_CONFIG.PREDICTION_LOCK_LABEL}`}
                         className={cn(
                           "opacity-0 group-hover:opacity-100 transition-opacity",
                           canViewPredictions
