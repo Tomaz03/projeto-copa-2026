@@ -119,6 +119,8 @@ export const BOLAOO_CONFIG = {
   TITLE: 'Bolão da Copa 2026',
   PIX_KEY: '92413684387',
   PREDICTION_LOCK_DAYS_BEFORE_TOURNAMENT: 1,
+  PREDICTION_LOCK_DATE_ISO: '2026-06-11T03:00:00.000Z',
+  PREDICTION_LOCK_LABEL: '10/06/2026, às 24:00',
 };
 
 export const getTournamentStartDate = (matches: Match[]): Date | null => {
@@ -132,6 +134,10 @@ export const getTournamentStartDate = (matches: Match[]): Date | null => {
 };
 
 export const getTournamentPredictionLockDate = (matches: Match[]): Date | null => {
+  if (BOLAOO_CONFIG.PREDICTION_LOCK_DATE_ISO) {
+    return new Date(BOLAOO_CONFIG.PREDICTION_LOCK_DATE_ISO);
+  }
+
   const tournamentStartDate = getTournamentStartDate(matches);
   if (!tournamentStartDate) return null;
 
