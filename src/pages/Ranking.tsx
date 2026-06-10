@@ -21,6 +21,7 @@ export default function Ranking() {
   const { user } = useAuth();
   const { matches, isLoading: isLoadingMatches } = useMatches();
   const [rankings, setRankings] = useState<RankingEntry[]>([]);
+  const [participantCount, setParticipantCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,28 +34,36 @@ export default function Ranking() {
 
         // Busca usuários aprovados ordenados pelos critérios de desempate:
         // 1º Pontos totais, 2º Placares exatos, 3º Resultados corretos, 4º Exatos no Brasil, 5º Pontos no Brasil, 6º Exatos nos EUA
-        const { data, error: fetchError } = await supabase
-          .from('profiles')
-          .select('id, name, full_name, total_points, exact_scores, correct_results, exact_scores_brazil_group, points_brazil_group, exact_scores_usa_group')
-          .eq('is_approved', true)
-          .eq('is_admin', false)
-          .order('total_points', { ascending: false })
-          .order('exact_scores', { ascending: false })
-          .order('correct_results', { ascending: false })
-          .order('exact_scores_brazil_group', { ascending: false })
-          .order('points_brazil_group', { ascending: false })
-          .order('exact_scores_usa_group', { ascending: false });
+        const [rankingResult, participantCountResult] = await Promise.all([
+          supabase
+            .from('profiles')
+            .select('id, name, full_name, total_points, exact_scores, correct_results, exact_scores_brazil_group, points_brazil_group, exact_scores_usa_group')
+            .eq('is_approved', true)
+            .eq('is_admin', false)
+            .order('total_points', { ascending: false })
+            .order('exact_scores', { ascending: false })
+            .order('correct_results', { ascending: false })
+            .order('exact_scores_brazil_group', { ascending: false })
+            .order('points_brazil_group', { ascending: false })
+            .order('exact_scores_usa_group', { ascending: false }),
+          supabase
+            .from('profiles')
+            .select('id', { count: 'exact', head: true })
+            .eq('is_admin', false),
+        ]);
 
-        if (fetchError) throw fetchError;
+        if (rankingResult.error) throw rankingResult.error;
+        if (participantCountResult.error) throw participantCountResult.error;
 
         // Adiciona a posição baseada na ordenação
-        const formattedRankings = (data || []).map((entry: any, index: number) => ({
+        const formattedRankings = (rankingResult.data || []).map((entry: any, index: number) => ({
           ...entry,
           position: index + 1,
           name: entry.name || entry.full_name // Compatibilidade
         }));
 
         setRankings(formattedRankings);
+        setParticipantCount(participantCountResult.count || 0);
       } catch (err: any) {
         console.error('Erro ao buscar ranking:', err);
         setError('Não foi possível carregar a classificação. Tente novamente mais tarde.');
@@ -73,8 +82,8 @@ export default function Ranking() {
   }, [rankings, searchTerm]);
 
   const prizePool = useMemo(() => {
-    return rankings.length * BOLAOO_CONFIG.ENTRY_FEE;
-  }, [rankings.length]);
+    return participantCount * BOLAOO_CONFIG.ENTRY_FEE;
+  }, [participantCount]);
 
   const formattedPrizePool = useMemo(() => {
     return new Intl.NumberFormat('pt-BR', {
@@ -146,7 +155,7 @@ export default function Ranking() {
               </div>
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-primary" />
-                <span>{rankings.length} Participantes</span>
+                <span>{participantCount} Participantes</span>
               </div>
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-primary" />

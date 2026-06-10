@@ -394,7 +394,7 @@ export default function UserDashboard() {
                 </div>
                 <div className="p-4 rounded-xl bg-muted/50 text-center">
                   <p className="text-xs text-muted-foreground uppercase font-bold">Fechamento Palpites</p>
-                  <p className="text-sm font-semibold mt-1">24 horas antes da copa começar</p>
+                  <p className="text-sm font-semibold mt-1">{BOLAOO_CONFIG.PREDICTION_LOCK_LABEL}</p>
                 </div>
               </div>
 

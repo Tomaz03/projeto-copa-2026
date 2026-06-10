@@ -225,13 +225,12 @@ export default function Rules() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Para garantir a idoneidade do bolão, os palpites de cada partida são travados automaticamente
-                    <strong> 24 horas </strong>
-                    antes do início da copa.
+                    Para garantir a idoneidade do bolão, os palpites de cada partida são travados automaticamente em
+                    <strong> {BOLAOO_CONFIG.PREDICTION_LOCK_LABEL}</strong>.
                   </p>
                   <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-primary">
                     <CheckCircle2 className="w-4 h-4" />
-                    Palpites até 1 dia antes da copa!
+                    Palpites até {BOLAOO_CONFIG.PREDICTION_LOCK_LABEL}!
                   </div>
                 </CardContent>
               </Card>
@@ -294,7 +293,7 @@ export default function Rules() {
               </div>
               <h3 className="font-bold mb-2">Transparência</h3>
               <p className="text-sm text-muted-foreground">
-                Após o bloqueio geral, 1 dia antes do início da Copa, os palpites de todos os usuários tornam-se públicos para consulta no Ranking.
+                Após o bloqueio geral em {BOLAOO_CONFIG.PREDICTION_LOCK_LABEL}, os palpites de todos os usuários tornam-se públicos para consulta no Ranking.
               </p>
             </div>
 

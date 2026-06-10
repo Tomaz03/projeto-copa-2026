@@ -9,7 +9,8 @@ import {
   Prediction,
   User,
   calculatePoints,
-  canViewUserPredictions
+  canViewUserPredictions,
+  BOLAOO_CONFIG
 } from '@/lib/index';
 import { useMatches } from '@/hooks/useMatches';
 import { useAuth } from '@/hooks/useAuth';
@@ -114,8 +115,8 @@ export default function ViewPredictions() {
           </div>
           <h2 className="text-2xl font-bold mb-3">Palpites ainda privados</h2>
           <p className="text-muted-foreground mb-6">
-            Antes do bloqueio geral, cada participante sÃ³ pode visualizar os prÃ³prios palpites.
-            Os palpites dos outros usuÃ¡rios serÃ£o liberados 1 dia antes do inÃ­cio da Copa.
+            Antes do bloqueio geral, cada participante só pode visualizar os próprios palpites.
+            Os palpites dos outros usuários serão liberados após {BOLAOO_CONFIG.PREDICTION_LOCK_LABEL}.
           </p>
           <Button asChild variant="secondary">
             <Link to={ROUTE_PATHS.RANKING}>Voltar para o Ranking</Link>

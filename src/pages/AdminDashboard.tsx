@@ -288,8 +288,7 @@ export default function AdminDashboard() {
                     <div className="space-y-2">
                       <p className="text-xs uppercase font-bold text-slate-500 tracking-widest">Trava de Palpites</p>
                       <p className="text-xl font-mono text-slate-200">
-                        {BOLAOO_CONFIG.PREDICTION_LOCK_DAYS_BEFORE_TOURNAMENT} dia
-                        <span className="text-xs text-slate-500 ml-2 font-sans font-normal">antes da Copa</span>
+                        {BOLAOO_CONFIG.PREDICTION_LOCK_LABEL}
                       </p>
                     </div>
                     <div className="space-y-2">

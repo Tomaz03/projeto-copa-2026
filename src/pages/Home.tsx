@@ -169,7 +169,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold">Dê seus Palpites</h4>
-                    <p className="text-muted-foreground">Insira seus palpites para todos os jogos da fase de grupos e mata-mata até 24 horas antes da copa começar.</p>
+                    <p className="text-muted-foreground">Insira seus palpites para todos os jogos da fase de grupos e mata-mata até {BOLAOO_CONFIG.PREDICTION_LOCK_LABEL}.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">

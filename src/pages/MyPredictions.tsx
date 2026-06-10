@@ -83,9 +83,8 @@ export default function MyPredictions() {
             Meus <span className="text-primary">Palpites</span>
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl">
-            Defina seus placares para cada partida. Lembre-se que o prazo limite é de
-            <span className="font-semibold text-foreground mx-1">24 horas</span>
-            antes do início da copa.
+            Defina seus placares para cada partida. Lembre-se que o prazo limite é
+            <span className="font-semibold text-foreground mx-1">{BOLAOO_CONFIG.PREDICTION_LOCK_LABEL}</span>.
           </p>
         </motion.div>
 
