@@ -75,10 +75,12 @@ export const useMatches = () => {
       return data as Match;
     },
     onSuccess: () => {
-      // Invalida o cache das partidas e também do ranking, pois novos pontos serão calculados
+      // Invalida os caches que dependem de resultado/pontuacao recalculados no banco.
       queryClient.invalidateQueries({ queryKey: ['matches'] });
       queryClient.invalidateQueries({ queryKey: ['rankings'] });
       queryClient.invalidateQueries({ queryKey: ['predictions'] });
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
 
