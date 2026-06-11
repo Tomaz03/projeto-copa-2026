@@ -31,7 +31,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { springPresets, fadeInUp, staggerContainer, staggerItem } from '@/lib/motion';
 
 export default function UserDashboard() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, refreshProfile } = useAuth();
   const { predictions, isLoading: predictionsLoading } = usePredictions(user?.id);
   const { matches } = useMatches();
   const { toast } = useToast();
@@ -42,6 +42,30 @@ export default function UserDashboard() {
   React.useEffect(() => {
     setCurrentUser(user);
   }, [user]);
+
+  React.useEffect(() => {
+    if (!user?.id) return;
+
+    refreshProfile();
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        refreshProfile();
+      }
+    };
+
+    const handleFocus = () => {
+      refreshProfile();
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [user?.id, refreshProfile]);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
